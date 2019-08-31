@@ -27,7 +27,7 @@ class Project extends Model
         'end_date',
         'confirmed',
         'description',
-        'feature_image',
+        'image',
         'type',
         'theme',
         'user_id',
@@ -42,4 +42,27 @@ class Project extends Model
     {
         return $this->belongsTo('App\User');
     }
+
+    /**
+     * Set the confirmed value
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setconfirmedAttribute($value)
+    {
+        $this->attributes['confirmed'] = ( $value == 'on')? 1 : 0;
+    }
+
+     /**
+     * Get the confirmed value
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function getConfirmedAttribute($value)
+    {
+        return  $this->attributes['confirmed'] = ( $value == 1) ? 'Active' : 'Inactive';
+    }
+
 }

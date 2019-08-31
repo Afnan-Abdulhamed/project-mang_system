@@ -470,24 +470,24 @@
         },
         {
             "name": "jeroennoten/laravel-adminlte",
-            "version": "v1.26.0",
+            "version": "v1.27.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/jeroennoten/Laravel-AdminLTE.git",
-                "reference": "1b288c79af86a2738ff8f5eb9addbcd14bf26f4b"
+                "reference": "bea607deee2fa1f2f228aa77d1257c5a9cd12e07"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/jeroennoten/Laravel-AdminLTE/zipball/1b288c79af86a2738ff8f5eb9addbcd14bf26f4b",
-                "reference": "1b288c79af86a2738ff8f5eb9addbcd14bf26f4b",
+                "url": "https://api.github.com/repos/jeroennoten/Laravel-AdminLTE/zipball/bea607deee2fa1f2f228aa77d1257c5a9cd12e07",
+                "reference": "bea607deee2fa1f2f228aa77d1257c5a9cd12e07",
                 "shasum": ""
             },
             "require": {
-                "laravel/framework": "~5.1.12|~5.2.0|~5.3.0|~5.4.0|~5.5.0|~5.6.0|~5.7.0|~5.8.0",
-                "php": ">=5.5.9"
+                "laravel/framework": "~5.5.0|~5.6.0|~5.7.0|~5.8.0|~6.0.0",
+                "php": ">=7.0.0"
             },
             "require-dev": {
-                "phpunit/phpunit": "~4.0"
+                "phpunit/phpunit": "^6"
             },
             "type": "library",
             "extra": {
@@ -519,7 +519,7 @@
                 "administrator",
                 "laravel"
             ],
-            "time": "2019-08-02T11:08:07+00:00"
+            "time": "2019-08-27T08:30:03+00:00"
         },
         {
             "name": "laravel/framework",

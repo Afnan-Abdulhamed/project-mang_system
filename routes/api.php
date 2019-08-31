@@ -13,8 +13,12 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:api')->get('/user', function (Request $request) {
+// });
 
-Route::apiResource('projects', 'ProjectsController');
+
+Route::get('projects/{userId}', 'Api\ProjectsApiController@index');
+Route::get('projects/{projectId}/show', 'Api\ProjectsApiController@show');
+Route::post('projects/{projectId}/update', 'Api\ProjectsApiController@update');
+
+

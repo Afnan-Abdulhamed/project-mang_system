@@ -44,4 +44,17 @@ class User extends Authenticatable
     {
         return $this->hasMany('App\Project');
     }
+
+
+    /**
+     * Get the Type value
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function getTypeAttribute($value)
+    {
+        return $this->attributes['type'] = ( $value == '1')? 'admin' : 'client';
+    }
+
 }

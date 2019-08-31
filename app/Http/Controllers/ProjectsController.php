@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Project;
+use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class ProjectsController extends Controller
 {
@@ -14,10 +16,23 @@ class ProjectsController extends Controller
      */
     public function index()
     {
-        $projects = Project::with('user')->get();
+        $projects = $this->list();
 
-        return ( $projects )? response($projects, 200) : response($projects, 500); 
+        return view('admin.projects.list-projects', ['projects' => $projects, 'user' => 'All']);
     }
+    
+
+    /**
+     * get all projects
+     *
+     * @return object
+     */
+    private function list()
+    {
+        $projects = Project::with('user')->get();
+        return ( $projects )? $projects : [];
+    }
+
 
     /**
      * Show the form for creating a new resource.
@@ -26,7 +41,10 @@ class ProjectsController extends Controller
      */
     public function create()
     {
-        return view('templates.add-project');
+        // fetch all users
+        $users = User::select('id', 'name')->get()->toArray();
+
+        return view('admin.projects.add-project', ['users' => $users]);
     }
 
     /**
@@ -38,19 +56,22 @@ class ProjectsController extends Controller
     public function store(Request $request)
     {
         $project = new Project();
-
-        $project->name = $request->name;
-        $project->start_date = $request->start_date;
-        $project->end_date = $request->end_date;
-        $project->confirmed = $request->confirmed;
-        $project->description = $request->description;
-        $project->feature_image = $request->feature_image;
-        $project->type = $request->type;
-        $project->theme = $request->theme;
-        $project->user_id = $request->user_id;
-
+        
+        if($project)
+        {
+            $project->name = $request->name;
+            $project->start_date = $request->start_date;
+            $project->end_date = $request->end_date;
+            $project->confirmed = $request->confirmed;
+            $project->description = $request->description;
+            $project->feature_image = ( $request->hasFile('image') )? $request->file('image')->store('/public/projects-images') :  "";
+            $project->type = $request->type;
+            $project->theme = $request->theme;
+            $project->user_id = $request->user;
+        }
         $saved = $project->save();
-        return ( $saved )? response($project, 201) : response($project, 500); 
+
+        return ( $saved )? redirect('/projects-manager/admin')->with( ['msg'=>'projectCreated']) : back()->withInput();
     }
 
     /**
@@ -61,9 +82,10 @@ class ProjectsController extends Controller
      */
     public function show($id)
     {
-        $project = Project::find($id);
+        $project = Project::with('user')->find($id);
+        $project->feature_image = url('/') . str_replace('public','/storage',$project->feature_image);
 
-        return view('templates.read-project');
+        return view('admin.projects.read-project', ['project' => $project]);
     }
 
     /**
@@ -74,7 +96,10 @@ class ProjectsController extends Controller
      */
     public function edit($id)
     {
-        return view('templates.edit-project');
+        // fetch all users
+        $users = User::select('id', 'name')->get()->toArray();
+        $project = Project::with('user')->find($id);
+        return view('admin.projects.edit-project', ['project' => $project, 'users'=>$users]);
     }
 
     /**
@@ -87,7 +112,7 @@ class ProjectsController extends Controller
     public function update(Request $request, $id)
     {
         $project = Project::find($id);
-
+        
         $project->name = $request->name;
         $project->start_date = $request->start_date;
         $project->end_date = $request->end_date;
@@ -116,4 +141,5 @@ class ProjectsController extends Controller
        return ( $deleted )? response($deleted, 200) : response($deleted, 500); 
 
     }
+
 }
